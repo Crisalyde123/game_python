@@ -16,3 +16,6 @@ ALIEN_DROP_INCREASE = 0.5
 # Scoring rules
 POINTS_PER_ALIEN = 10
 SPEED_UP_SCORE = 100
+
+# Bonus item behaviour
+LIFE_ITEM_SPEED = 2
