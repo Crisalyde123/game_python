@@ -1,4 +1,5 @@
 import pygame
+import random
 
 from settings import (
     WIDTH,
@@ -9,7 +10,7 @@ from settings import (
     POINTS_PER_ALIEN,
     SPEED_UP_SCORE,
 )
-from sprites import Player, Bullet, create_wave
+from sprites import Player, Bullet, LifeItem, create_wave
 
 
 pygame.init()
@@ -24,6 +25,8 @@ def main():
     player_group = pygame.sprite.Group(player)
     bullets = pygame.sprite.Group()
     alien_bullets = pygame.sprite.Group()
+    life_items = pygame.sprite.Group()
+    frames_since_life = 0
 
     score = 0
     level = 0
@@ -49,6 +52,13 @@ def main():
         bullets.update()
         aliens.update()
         alien_bullets.update()
+        life_items.update()
+
+        frames_since_life += 1
+        if random.random() < min(0.0005 * frames_since_life, 0.05):
+            item = LifeItem(random.randint(20, WIDTH - 20), -20)
+            life_items.add(item)
+            frames_since_life = 0
 
         for alien in aliens:
             alien.maybe_shoot(alien_bullets)
@@ -59,6 +69,8 @@ def main():
             score += POINTS_PER_ALIEN
         if pygame.sprite.spritecollide(player, alien_bullets, True):
             player.lives -= 1
+        if pygame.sprite.spritecollide(player, life_items, True):
+            player.lives += 1
 
         if score // SPEED_UP_SCORE > level:
             level += 1
@@ -77,6 +89,7 @@ def main():
         bullets.draw(screen)
         aliens.draw(screen)
         alien_bullets.draw(screen)
+        life_items.draw(screen)
 
         score_surf = font.render(f"Score: {score}", True, (255, 255, 255))
         lives_surf = font.render(f"Lives: {player.lives}", True, (255, 255, 255))

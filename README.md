@@ -8,7 +8,9 @@ A simple space shooter built with Pygame.
 
 Install dependencies with:
 ```bash
-pip install pygame
+pip install -r requirements.txt
+# optional: confirm everything installed correctly
+pip check
 ```
 
 ## Running the game
@@ -16,4 +18,4 @@ pip install pygame
 python main.py
 ```
 
-Use left/right arrows or A/D to move the ship. Press space or click to fire. Destroy aliens to score points. Every 100 points the aliens get faster and more numerous. You start with 3 lives; lose one if an alien reaches the bottom, collides with your ship, or hits you with a projectile. Game over when all lives are lost.
+Use left/right arrows or A/D to move the ship. Press space or click to fire. Aliens now appear in random positions and waves become tougher every 100 points. Collect the magenta life items that occasionally drift down – the longer since the last one appeared, the more likely a new one will spawn. You start with 3 lives; lose one if an alien reaches the bottom, collides with your ship, or hits you with a projectile. Game over when all lives are lost.

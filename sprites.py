@@ -1,7 +1,14 @@
 import pygame
 import random
 
-from settings import WIDTH, HEIGHT, PLAYER_SPEED, BULLET_SPEED, ALIEN_BULLET_SPEED
+from settings import (
+    WIDTH,
+    HEIGHT,
+    PLAYER_SPEED,
+    BULLET_SPEED,
+    ALIEN_BULLET_SPEED,
+    LIFE_ITEM_SPEED,
+)
 
 
 class Player(pygame.sprite.Sprite):
@@ -74,13 +81,28 @@ class Alien(pygame.sprite.Sprite):
             bullets.add(bullet)
 
 
+class LifeItem(pygame.sprite.Sprite):
+    """Floating item granting an extra life when collected."""
+
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((20, 20))
+        self.image.fill((255, 0, 255))
+        self.rect = self.image.get_rect(center=(x, y))
+
+    def update(self):
+        self.rect.y += LIFE_ITEM_SPEED
+        if self.rect.top > HEIGHT:
+            self.kill()
+
+
 def create_wave(level, speed):
     """Create a wave of descending aliens."""
     aliens = pygame.sprite.Group()
     count = 5 + level * 2
-    spacing = WIDTH // count
-    for i in range(count):
-        x = i * spacing + spacing // 2 - 20
-        alien = Alien(x, -40, speed)
+    for _ in range(count):
+        x = random.randint(0, WIDTH - 40)
+        y = random.randint(-150, -40)
+        alien = Alien(x, y, speed)
         aliens.add(alien)
     return aliens
