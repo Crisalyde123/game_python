@@ -18,4 +18,4 @@ pip check
 python main.py
 ```
 
-Use left/right arrows or A/D to move the ship. Press space or click to fire. Aliens now appear in random positions and waves become tougher every 100 points. Collect the magenta life items that occasionally drift down – the longer since the last one appeared, the more likely a new one will spawn. You start with 3 lives; lose one if an alien reaches the bottom, collides with your ship, or hits you with a projectile. Game over when all lives are lost.
+Use left/right arrows or A/D to move the ship. Press space or click to fire. Aliens now appear in random positions and waves become tougher every 100 points. Destroyed aliens drop golden coins worth five points each. Red heart items occasionally drift down; the longer since the last one appeared, the more likely a new one will spawn. You start with 3 lives; lose one if an alien reaches the bottom, collides with your ship, or hits you with a projectile. Game over when all lives are lost.

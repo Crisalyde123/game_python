@@ -11,13 +11,47 @@ from settings import (
 )
 
 
+def create_ship_surface():
+    """Return a simple pixel-art style ship surface."""
+    surf = pygame.Surface((50, 30), pygame.SRCALPHA)
+    pygame.draw.polygon(surf, (50, 150, 255), [(25, 0), (50, 30), (0, 30)])
+    pygame.draw.rect(surf, (255, 0, 0), pygame.Rect(22, 10, 6, 15))
+    return surf
+
+
+def create_alien_surface():
+    """Return a pixel-art alien surface."""
+    surf = pygame.Surface((40, 30), pygame.SRCALPHA)
+    pygame.draw.ellipse(surf, (0, 200, 0), pygame.Rect(5, 0, 30, 20))
+    pygame.draw.rect(surf, (0, 180, 0), pygame.Rect(10, 15, 20, 10))
+    pygame.draw.circle(surf, (255, 0, 0), (15, 10), 3)
+    pygame.draw.circle(surf, (255, 0, 0), (25, 10), 3)
+    return surf
+
+
+def create_heart_surface():
+    """Return a pixel-art heart surface."""
+    surf = pygame.Surface((20, 20), pygame.SRCALPHA)
+    pygame.draw.circle(surf, (255, 0, 0), (6, 6), 6)
+    pygame.draw.circle(surf, (255, 0, 0), (14, 6), 6)
+    pygame.draw.polygon(surf, (255, 0, 0), [(0, 9), (10, 19), (20, 9)])
+    return surf
+
+
+def create_coin_surface():
+    """Return a pixel-art coin surface."""
+    surf = pygame.Surface((16, 16), pygame.SRCALPHA)
+    pygame.draw.circle(surf, (255, 215, 0), (8, 8), 7)
+    pygame.draw.circle(surf, (240, 200, 0), (8, 8), 5)
+    return surf
+
+
 class Player(pygame.sprite.Sprite):
     """Spaceship controlled by the player."""
 
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 30))
-        self.image.fill((0, 255, 0))
+        self.image = create_ship_surface()
         self.rect = self.image.get_rect(midbottom=(WIDTH // 2, HEIGHT - 10))
         self.lives = 3
         # Last movement direction used for shooting
@@ -92,8 +126,7 @@ class Alien(pygame.sprite.Sprite):
 
     def __init__(self, x, y, speed):
         super().__init__()
-        self.image = pygame.Surface((40, 30))
-        self.image.fill((0, 0, 255))
+        self.image = create_alien_surface()
         self.rect = self.image.get_rect(topleft=(x, y))
         # random initial velocity vector
         vec = pygame.math.Vector2(random.uniform(-1, 1), random.uniform(-1, 1))
@@ -124,8 +157,21 @@ class LifeItem(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.Surface((20, 20))
-        self.image.fill((255, 0, 255))
+        self.image = create_heart_surface()
+        self.rect = self.image.get_rect(center=(x, y))
+
+    def update(self):
+        self.rect.y += LIFE_ITEM_SPEED
+        if self.rect.top > HEIGHT:
+            self.kill()
+
+
+class CoinItem(pygame.sprite.Sprite):
+    """Collectible coin that increases the score."""
+
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = create_coin_surface()
         self.rect = self.image.get_rect(center=(x, y))
 
     def update(self):
