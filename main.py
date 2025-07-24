@@ -40,10 +40,10 @@ def main():
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    bullet = Bullet(player.rect.centerx, player.rect.top)
+                    bullet = Bullet(player.rect.centerx, player.rect.centery, player.direction)
                     bullets.add(bullet)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                bullet = Bullet(player.rect.centerx, player.rect.top)
+                bullet = Bullet(player.rect.centerx, player.rect.centery, player.direction)
                 bullets.add(bullet)
 
         pressed = pygame.key.get_pressed()
@@ -61,7 +61,7 @@ def main():
             frames_since_life = 0
 
         for alien in aliens:
-            alien.maybe_shoot(alien_bullets)
+            alien.maybe_shoot(alien_bullets, player.rect.center)
             if alien.rect.colliderect(player.rect):
                 alien.kill()
                 player.lives -= 1

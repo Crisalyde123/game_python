@@ -6,8 +6,9 @@ FPS = 60
 
 # Player and bullet behaviour
 PLAYER_SPEED = 5
-BULLET_SPEED = -8
-ALIEN_BULLET_SPEED = 4
+# Bullet speed magnitudes for player and aliens
+PLAYER_BULLET_SPEED = 8
+ALIEN_BULLET_SPEED = 5
 
 # Alien movement tuning
 INITIAL_ALIEN_SPEED = 1
