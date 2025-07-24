@@ -1,93 +1,22 @@
 import pygame
-import random
 
-# Game constants
-WIDTH, HEIGHT = 800, 600
-FPS = 60
+from settings import (
+    WIDTH,
+    HEIGHT,
+    FPS,
+    INITIAL_ALIEN_SPEED,
+    ALIEN_DROP_INCREASE,
+    POINTS_PER_ALIEN,
+    SPEED_UP_SCORE,
+)
+from sprites import Player, Bullet, create_wave
 
-PLAYER_SPEED = 5
-BULLET_SPEED = -8
-ALIEN_BULLET_SPEED = 4
-INITIAL_ALIEN_SPEED = 1
-ALIEN_DROP_INCREASE = 0.5
-
-POINTS_PER_ALIEN = 10
-SPEED_UP_SCORE = 100
 
 pygame.init()
 pygame.display.set_caption("Space Shooter")
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
-
 font = pygame.font.SysFont(None, 36)
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((50, 30))
-        self.image.fill((0, 255, 0))
-        self.rect = self.image.get_rect(midbottom=(WIDTH // 2, HEIGHT - 10))
-        self.lives = 3
-
-    def update(self, pressed):
-        if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
-            self.rect.x -= PLAYER_SPEED
-        if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
-            self.rect.x += PLAYER_SPEED
-        self.rect.clamp_ip(screen.get_rect())
-
-class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.image = pygame.Surface((5, 10))
-        self.image.fill((255, 255, 0))
-        self.rect = self.image.get_rect(center=(x, y))
-
-    def update(self):
-        self.rect.y += BULLET_SPEED
-        if self.rect.bottom < 0:
-            self.kill()
-
-class AlienBullet(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.image = pygame.Surface((5, 10))
-        self.image.fill((255, 0, 0))
-        self.rect = self.image.get_rect(center=(x, y))
-
-    def update(self):
-        self.rect.y += ALIEN_BULLET_SPEED
-        if self.rect.top > HEIGHT:
-            self.kill()
-
-class Alien(pygame.sprite.Sprite):
-    def __init__(self, x, y, speed):
-        super().__init__()
-        self.image = pygame.Surface((40, 30))
-        self.image.fill((0, 0, 255))
-        self.rect = self.image.get_rect(topleft=(x, y))
-        self.speed = speed
-
-    def update(self):
-        self.rect.y += self.speed
-        if self.rect.top > HEIGHT:
-            self.kill()
-
-    def maybe_shoot(self, bullets):
-        if random.random() < 0.005:
-            bullet = AlienBullet(self.rect.centerx, self.rect.bottom)
-            bullets.add(bullet)
-
-
-def create_wave(level, speed):
-    aliens = pygame.sprite.Group()
-    count = 5 + level * 2
-    spacing = WIDTH // count
-    for i in range(count):
-        x = i * spacing + spacing // 2 - 20
-        alien = Alien(x, -40, speed)
-        aliens.add(alien)
-    return aliens
 
 
 def main():
@@ -115,7 +44,7 @@ def main():
                 bullets.add(bullet)
 
         pressed = pygame.key.get_pressed()
-        player.update(pressed)
+        player.update(pressed, screen.get_rect())
 
         bullets.update()
         aliens.update()
@@ -159,5 +88,6 @@ def main():
 
     pygame.quit()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
